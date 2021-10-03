@@ -37,7 +37,7 @@
 //
 // CAREFUL! The power requirements for 2 13x9 RGB LED matrices can
 // easily overwhelm the 500-600mA regulators on most microcontrollers.
-// This firmware as provided should max out around 400mA on the QT Py RP2040,
+// This firmware as provided should max out around 200mA on the QT Py RP2040,
 // but if you change it or use a different microcontroller, you may need to
 // figure out how to power the matrices externally or risk browning out your 
 // microcontroller's regulator.

@@ -53,7 +53,8 @@ public:
             Adafruit_IS31FL3741_QT_buffered* matrix = devices[d].matrix;
             matrix->setLEDscaling(255);
             // Tone down the brightness so we don't overload the regulator.
-            matrix->setGlobalCurrent(48);
+            // Also because these things are blisteringly bright.
+            matrix->setGlobalCurrent(16);
             matrix->enable(true);
             matrix->setRotation(0);
             matrix->setTextWrap(false);            
