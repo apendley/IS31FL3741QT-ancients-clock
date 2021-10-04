@@ -54,7 +54,7 @@ public:
             matrix->setLEDscaling(255);
             // Tone down the brightness so we don't overload the regulator.
             // Also because these things are blisteringly bright.
-            matrix->setGlobalCurrent(16);
+            matrix->setGlobalCurrent(8);
             matrix->enable(true);
             matrix->setRotation(0);
             matrix->setTextWrap(false);            
