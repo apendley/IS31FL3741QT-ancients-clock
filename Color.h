@@ -29,6 +29,10 @@ namespace Color {
         return Adafruit_IS31FL3741::color565(color888);
     }
 
+    inline uint16_t color565(uint8_t r, uint8_t g, uint8_t b) {
+        return Adafruit_IS31FL3741::color565(r, g, b);
+    }    
+
     inline uint32_t hsv888(uint16_t hue, uint8_t sat = 255, uint8_t val = 255) {
         return Adafruit_IS31FL3741::ColorHSV(hue, sat, val);
     }
@@ -36,6 +40,16 @@ namespace Color {
     inline uint16_t hsv565(uint16_t hue, uint8_t sat = 255, uint8_t val = 255) {
         return color565(hsv888(hue, sat, val));
     }    
+
+    inline uint16_t adjustHue(uint16_t hue) {
+        // Slide the hue 1/3 of the way around the wheel...
+        const uint32_t slide = 65536 / 3;
+        uint32_t adjusted = (hue + slide) & 0xFFFF;
+
+        // ...and then invert it. This starts the cycle at blue, with red being 2/3 of the way through the cycle.
+        // Incidentally, this makes the text blue at midnight, and red at 4 pm, which I think is nice.
+        return 65535 - adjusted;
+    }
     
     inline uint16_t hueForHour(uint8_t hour, uint8_t minute) {
         if (hour > 23) {
@@ -46,7 +60,8 @@ namespace Color {
             minute = 59;
         }
         
-        return map(hour * 60 + minute, 0, 24 * 60, 0, 65536);
+        uint16_t hue = map(hour * 60 + minute, 0, 24 * 60, 0, 65536);
+        return adjustHue(hue);
     }
 
     inline uint16_t hueForMinute(uint8_t minute, uint8_t second) {
@@ -57,8 +72,9 @@ namespace Color {
         if (second > 59) {
             second = 59;
         }
-        
-        return map(minute * 60 + second, 0, 60 * 60, 0, 65536);
+
+        uint16_t hue = map(minute * 60 + second, 0, 60 * 60, 0, 65536);
+        return adjustHue(hue);
     }
 
     inline uint16_t hueForSecond(uint8_t second, uint32_t ms = 0) {
@@ -70,7 +86,8 @@ namespace Color {
             ms = 999;
         }
 
-        return map(second * 500 + (ms/2), 0, 60 * 500, 0, 65536);
+        uint16_t hue = map(second * 500 + (ms/2), 0, 60 * 500, 0, 65536);
+        return adjustHue(hue);
     } 
 
     inline uint16_t hueForHour(const DateTime& t) {
