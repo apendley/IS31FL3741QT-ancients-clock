@@ -37,10 +37,11 @@
 //
 // CAREFUL! The power requirements for 2 13x9 RGB LED matrices can
 // easily overwhelm the 500-600mA regulators on most microcontrollers.
-// This firmware as provided should max out around 200mA on the QT Py RP2040,
+// This firmware as provided should never use more than 50-100 mA on the QT Py RP2040,
 // but if you change it or use a different microcontroller, you may need to
 // figure out how to power the matrices externally or risk browning out your 
-// microcontroller's regulator.
+// microcontroller's regulator. Also, it turns out these LEDs are incredibly bright,
+// so the current firmware reduces the brightness quite significantly.
 
 
 
@@ -119,14 +120,15 @@ void loop() {
 }
 
 void drawTime(DateTime now, uint32_t ms) {
-    display.setCursor(1, 8);
-
+    display.setCursor(0, 8);
     display.setTextColor(Color::colorForHour(now));
     display.printf("%02u", now.hour());
 
+    display.setCursor(9, 8);
     display.setTextColor(Color::colorForMinute(now));
     display.printf("%02u", now.minute());
 
+    display.setCursor(18, 8);
     display.setTextColor(Color::colorForSecond(now, ms));
     display.printf("%02u", now.second());
 }    
